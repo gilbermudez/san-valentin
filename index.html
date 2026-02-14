@@ -1,34 +1,190 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¿Quieres ser mi Valentín? ❤️</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1 class="title">¡Hola mi amor! 💖</h1>
-        <p class="subtitle">Tengo una pregunta muy importante para ti...</p>
-        
-        <button id="revealButton">Haz clic aquí</button>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Ti ❤️</title>
 
-        <div id="message" class="hidden">
-            <p>¿Quieres ser mi Valentín? 💘</p>
-            <div class="buttons">
-                <button class="yes">¡Sí! 💕</button>
-                <button class="no">No 😢</button>
-            </div>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ff4e88, #ff99ac);
+    overflow: hidden;
+    color: white;
+    text-align: center;
+}
+
+.container {
+    max-width: 750px;
+    padding: 20px;
+}
+
+.romantic {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.6rem;
+}
+
+button {
+    padding: 12px 25px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: white;
+    color: #ff4e88;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+#noBtn {
+    background-color: #ff2e63;
+    color: white;
+    position: relative;
+}
+
+.hidden {
+    display: none;
+}
+
+.heart {
+    position: absolute;
+    font-size: 20px;
+    animation: float 6s linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-10vh); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ESCENA 1 -->
+    <div id="welcomeSection">
+        <div class="romantic">
+            Para mi reina hermosa,  
+            que amo hasta el infinito y más allá ❤️
         </div>
+        <button id="startBtn">Descubre lo que siento 💖</button>
     </div>
 
-    <!-- Contenedor para los corazones animados -->
-    <div id="hearts-container"></div>
-    
-    <!-- Video de YouTube oculto para música de fondo -->
-    <div id="player"></div>
+    <!-- ESCENA 2 -->
+    <div id="messageSection" class="hidden">
+        <div class="romantic">
+            Desde que te conocí quedé perdidamente enamorado de ti  
+            y ahora que te tengo conmigo no quiero separarme de ti.
+            <br>
+            <br>
+            Me inspiras a ser mejor cada día y cada día quiero ser mejor para ti.
+            <br>
+            <br>
+            Te amo hasta el infinito y más allá y siempre te voy amar.
+        </div>
+        <button id="continueBtn">Continua 💕</button>
+    </div>
 
+    <!-- ESCENA 3 -->
+    <div id="questionSection" class="hidden">
+        <div class="romantic" id="questionText"></div>
+        <button id="yesBtn">Sí ❤️</button>
+        <button id="noBtn">No 😅</button>
+    </div>
 
-    <script src="script.js"></script>
+    <!-- FINAL -->
+    <div class="romantic hidden" id="finalMessage">
+        Sabía que dirías que sí 💖  
+        Este será nuestro mejor San Valentín.
+    </div>
+
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="Taylor Swift - Lover.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const startBtn = document.getElementById("startBtn");
+const continueBtn = document.getElementById("continueBtn");
+const welcomeSection = document.getElementById("welcomeSection");
+const messageSection = document.getElementById("messageSection");
+const questionSection = document.getElementById("questionSection");
+const questionText = document.getElementById("questionText");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const finalMessage = document.getElementById("finalMessage");
+const music = document.getElementById("bgMusic");
+
+const question = "¿Quieres ser mi Valentine?";
+
+// ESCENA 1 → 2
+startBtn.addEventListener("click", () => {
+    music.play(); // empieza la música
+    welcomeSection.classList.add("hidden");
+    messageSection.classList.remove("hidden");
+});
+
+// ESCENA 2 → 3
+continueBtn.addEventListener("click", () => {
+    messageSection.classList.add("hidden");
+    questionSection.classList.remove("hidden");
+
+    let i = 0;
+    function typeEffect() {
+        if (i < question.length) {
+            questionText.innerHTML += question.charAt(i);
+            i++;
+            setTimeout(typeEffect, 80);
+        }
+    }
+    typeEffect();
+});
+
+// Respuesta sí
+yesBtn.addEventListener("click", () => {
+    questionSection.classList.add("hidden");
+    finalMessage.classList.remove("hidden");
+});
+
+// Botón que huye
+noBtn.addEventListener("mouseover", () => {
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+
+// Corazones flotando
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 6000);
+}
+
+setInterval(createHeart, 300);
+</script>
+
 </body>
 </html>
